@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hoops49 – Model Methodology</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; max-width: 760px; margin: 40px auto; padding: 0 20px; color: #222; line-height: 1.7; }
+    h1 { font-size: 2rem; margin-bottom: 4px; }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 40px; }
+    h2 { font-size: 1.2rem; margin-top: 36px; border-bottom: 1px solid #eee; padding-bottom: 6px; }
+    h3 { font-size: 1.02rem; margin-top: 24px; }
+    ul { padding-left: 20px; }
+    a { color: #E35A2A; }
+    .note { background: #faf6f3; border: 1px solid #f0e5dd; border-radius: 8px; padding: 12px 16px; }
+  </style>
+</head>
+<body>
+
+<h1>Model Methodology</h1>
+<p class="meta">App: <strong>Hoops49</strong> &nbsp;|&nbsp; Last updated: July 28, 2026 &nbsp;|&nbsp; Developer: Franjo Grsetic</p>
+
+<p>Hoops49 is an NBA analytics app. This page explains, in plain language, how our AI models produce the projections you see in the app and how we measure and publish their accuracy. Our goal is transparency: we show you what the model predicts, why, and how it has actually performed.</p>
+
+<div class="note"><strong>This is not betting advice.</strong> Hoops49 is an analytics and entertainment product, not a sportsbook, and does not accept wagers. Projections are estimates and can be wrong. Nothing in the app is a recommendation to place a bet. See our <a href="terms-of-service.html">Terms of Service</a>.</div>
+
+<h2>1. What the models produce</h2>
+<p>Hoops49 runs two families of machine-learning models:</p>
+<ul>
+  <li><strong>Player projections</strong> — a per-game estimate for each tracked stat (points, rebounds, assists, three-pointers made, combined categories such as P+R+A, turnovers, steals, and blocks). For markets with a sportsbook line, the projection is converted into an estimated probability that the player finishes over or under that line.</li>
+  <li><strong>Game outcomes</strong> — an estimate of each team's final score, from which we derive a projected spread, total, and win probability for the game.</li>
+</ul>
+
+<h2>2. How the models are built</h2>
+
+<h3>Player projections</h3>
+<p>Each stat has its own gradient-boosted decision-tree model (XGBoost) trained on historical, completed NBA games. The models learn from features such as a player's season and recent-form averages, usage, minutes and role, and the strength of the opposing defense. A projection is a weighted blend of what a player typically does and how the specific matchup is likely to shift it.</p>
+<p>A raw projection is not the same as a probability. To turn "we project 27.4 points" into "we estimate a 58% chance of going over 26.5," we apply a separate calibration step (Platt scaling) fitted on historical results, so that the stated percentages line up with how often those outcomes actually occur. Low-variance stats such as steals and blocks are modeled with an empirical rate-based (Poisson) approach rather than the point projection, because that produces better-calibrated probabilities for those markets.</p>
+
+<h3>Game outcomes</h3>
+<p>Game scores are projected by gradient-boosted models trained on thousands of historical games, using team scoring and defensive rates, pace, rest and schedule situation, and recent form. The projected point margin is combined with the model's historical error to produce a win probability, spread cover probability, and over/under probability.</p>
+
+<h2>3. How we measure accuracy</h2>
+<p>We evaluate the models the same way a researcher would — against real, settled results, not cherry-picked highlights:</p>
+<ul>
+  <li><strong>Hit rate</strong> — of the picks the model leaned toward, what share actually landed on the projected side.</li>
+  <li><strong>Calibration</strong> — when the model says "60%," does that outcome happen about 60% of the time? A well-calibrated model's stated confidence matches reality. We show this as a calibration curve on the Model Performance screen.</li>
+</ul>
+<p>These figures come from the model's own published projections compared to the box scores after games are played. The Model Performance screen surfaces this record openly so you can judge the model on its results.</p>
+
+<h2>4. Honesty and limitations</h2>
+<ul>
+  <li><strong>Models can be wrong.</strong> Basketball is high-variance. Injuries, blowouts, rest, and lineup changes routinely defy any projection. Treat every number as an estimate with real uncertainty.</li>
+  <li><strong>Some markets are still being validated.</strong> Features and markets that are newly added, or that we are still calibrating, are labeled <strong>BETA</strong> in the app until their accuracy is confirmed on live in-season results.</li>
+  <li><strong>No look-ahead.</strong> Accuracy figures are computed from projections made before the games were played, then compared to the final results.</li>
+  <li><strong>Data dependence.</strong> Projections rely on third-party NBA data and sportsbook lines; gaps or delays in that data can affect what the app can show, especially in the offseason.</li>
+</ul>
+
+<h2>5. Data sources</h2>
+<p>The models are trained and run on NBA statistics from licensed third-party sports-data providers, and sportsbook lines from a third-party odds provider. Hoops49 is an independent product and is not affiliated with, endorsed by, or sponsored by the NBA or any sportsbook.</p>
+
+<h2>6. Contact</h2>
+<p>Questions about how the models work? Contact us at:<br />
+<a href="mailto:floppyspot1976@gmail.com">floppyspot1976@gmail.com</a></p>
+
+</body>
+</html>
